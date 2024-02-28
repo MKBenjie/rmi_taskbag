@@ -20,11 +20,11 @@ public class TaskBagImp extends UnicastRemoteObject implements TaskBagInterface{
     }
 
     // Master process method for adding a task to the taskData HashMap 
-    public void pairOut(int id, int[] value) throws RemoteException {
+    public synchronized void pairOut(int id, int[] value) throws RemoteException {
         taskData.put(id, value);
     }
 
-    public void pairOut(String key, int[] value) throws RemoteException {
+    public synchronized void pairOut(String key, int[] value) throws RemoteException {
         List<Integer> results = taskResults.getOrDefault(key, new ArrayList<Integer>());
         for (int num : value) {
             results.add(num);
@@ -33,7 +33,7 @@ public class TaskBagImp extends UnicastRemoteObject implements TaskBagInterface{
     }
 
     // Master Process Adds tasks description to taskDescriptions HashMap
-    public void pairOut(String key, int id) throws RemoteException {
+    public synchronized void pairOut(String key, int id) throws RemoteException {
         taskDescriptions.put(key, id);
         if (id > maxTaskId) {
             maxTaskId = id;
@@ -42,12 +42,12 @@ public class TaskBagImp extends UnicastRemoteObject implements TaskBagInterface{
 
 
     // Method to Withdraws a task to be executed and deletes the task from taskData array
-    public int[] pairIn(int id) throws RemoteException {
+    public synchronized int[] pairIn(int id) throws RemoteException {
         return taskData.remove(id);
     }
 
     // Method that Withdraws next task id from the taskDescriptions array
-    public int pairIn(String key) throws RemoteException {
+    public synchronized int pairIn(String key) throws RemoteException {
         while (taskDescriptions.containsKey("NextTask")) {
             try {
                 int taskId = taskDescriptions.remove(key);
@@ -67,7 +67,7 @@ public class TaskBagImp extends UnicastRemoteObject implements TaskBagInterface{
     }
 
     // Method to Read the pair from the tasksResults done by workers and returns array of value
-    public List<Integer> readPair(String key) throws RemoteException {
+    public synchronized List<Integer> readPair(String key) throws RemoteException {
         List<Integer> result = new ArrayList<>();
         for (String taskKey : taskResults.keySet()) {
             if (taskKey.endsWith(key)) {
