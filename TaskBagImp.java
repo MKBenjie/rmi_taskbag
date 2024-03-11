@@ -28,14 +28,15 @@ public class TaskBagImp extends UnicastRemoteObject implements TaskBagInterface{
         taskData.put(id, value);
     }
 
-    public synchronized void pairOut(String key, int[] value) throws RemoteException {
+    public synchronized void pairOut(String key, int[] value, String description) throws RemoteException {
         List<Integer> results = taskResults.getOrDefault(key, new ArrayList<Integer>());
         for (int num : value) {
             results.add(num);                                     /* results.addAll(results); */
         }
         taskResults.put(key, results);
         // -TODO- 
-        otherResults.put("key " + 1, results);
+        getCurrentWorkerDetails();
+        otherResults.put(description, results);
     }
 
     // Master Process Adds tasks description to taskDescriptions HashMap
@@ -91,5 +92,13 @@ public class TaskBagImp extends UnicastRemoteObject implements TaskBagInterface{
         }
         return result;
     }
+
+    // @Override
+    // public void pairOut(String key, int[] value, int description) throws RemoteException {
+    //     // TODO Auto-generated method stub
+    //     pairOut(key, description);
+
+    //     throw new UnsupportedOperationException("Unimplemented method 'pairOut'");
+    // }
 
 }

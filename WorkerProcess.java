@@ -13,6 +13,7 @@ public class WorkerProcess {
             int[] task,result;
             int taskId;
             String ip = Inet4Address.getLocalHost().getHostAddress();
+            int timesreplied = 0;
 
             // Determine the host address for the RMI registry
             String hostAddress;
@@ -36,10 +37,11 @@ public class WorkerProcess {
 
                 // Calculate prime numbers from the task data
                 result = getPrime(task);
+                
 
                 // Store the calculated prime numbers as the result
-                taskBag.setCurrentWorkerDetails(ip);
-                taskBag.pairOut("result", result);
+                // taskBag.setCurrentWorkerDetails(ip + " reply "+timesreplied);
+                taskBag.pairOut("result", result , (ip+" reply "+timesreplied) );
 
                 // Sleep for 2 seconds to simulate task processing time
                 Thread.sleep(2000);

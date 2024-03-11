@@ -2,8 +2,7 @@ import java.util.*;
 import java.rmi.Naming;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.rmi.Remote;
-import java.rmi.RemoteException;
+
 
 
 
@@ -84,9 +83,11 @@ public class MasterProcess {
                 System.out.println();
 
                 Map<String, List<Integer>> otherResults = taskBag.otherResults;
+
+                System.out.println("individual contributions");
                 otherResults.forEach((key, value) -> {
                     System.out.println(key); 
-                    System.out.println(results);
+                    System.out.println(value);
                     taskBag.otherResults.remove(key);
                 }); 
             }
