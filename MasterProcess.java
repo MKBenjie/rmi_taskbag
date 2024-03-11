@@ -74,12 +74,17 @@ public class MasterProcess {
                     System.out.println("Exiting ......");
                     break;
                 }
-
-                System.out.println("Obtained Results From Worker(s):" + result.size());
-                System.out.println(taskBag.getCurrentWorkerDetails() + "\n");
+                
+                // System.out.println("Obtained Results From Worker(s):" + result.size());
+                // System.out.println(taskBag.getCurrentWorkerDetails() + "\n");
+                // for (int num : results) {
+                //     System.out.print(num + " ");                                           
+                // }
+                // System.out.println();
+                
+                System.out.println("Obtained Results From Worker(s):");                
                 for (int num : results) {
-                    System.out.print(num + " ");                                           
-                }
+                    System.out.print(num + " ");                }
                 System.out.println();
 
                 Map<String, List<Integer>> otherResults = taskBag.otherResults;
