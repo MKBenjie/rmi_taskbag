@@ -10,6 +10,7 @@ public class TaskBagImp extends UnicastRemoteObject implements TaskBagInterface{
     private Map<Integer, int[]> taskData;
     private Map<String, Integer> taskDescriptions;
     private Map<String, List<Integer>> taskResults;
+    private String currentWorkerDetails;
     private int maxTaskId;
     Map<String, List<Integer>> otherResults;
 
@@ -43,6 +44,14 @@ public class TaskBagImp extends UnicastRemoteObject implements TaskBagInterface{
         if (id > maxTaskId) {
             maxTaskId = id;
         }
+    }
+
+    public synchronized void setCurrentWorkerDetails (String details) throws RemoteException {
+        currentWorkerDetails = details;
+    }
+
+    public synchronized String getCurrentWorkerDetails () throws RemoteException {
+        return currentWorkerDetails;
     }
 
 

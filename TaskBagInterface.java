@@ -10,4 +10,6 @@ public interface TaskBagInterface extends Remote{
     public int[] pairIn(int id) throws RemoteException;
     public int pairIn(String key) throws RemoteException;
     public List<Integer> readPair(String key) throws RemoteException;
+    public void setCurrentWorkerDetails (String details) throws RemoteException;
+    public String getCurrentWorkerDetails () throws RemoteException;
 }

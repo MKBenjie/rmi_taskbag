@@ -1,3 +1,4 @@
+import java.net.Inet4Address;
 import java.rmi.Naming;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ public class WorkerProcess {
             // Declare variables to hold task and result arrays, and the task ID
             int[] task,result;
             int taskId;
+            String ip = Inet4Address.getLocalHost().getHostAddress();
 
             // Determine the host address for the RMI registry
             String hostAddress;
@@ -36,6 +38,7 @@ public class WorkerProcess {
                 result = getPrime(task);
 
                 // Store the calculated prime numbers as the result
+                taskBag.setCurrentWorkerDetails(ip);
                 taskBag.pairOut("result", result);
 
                 // Sleep for 2 seconds to simulate task processing time
@@ -47,6 +50,7 @@ public class WorkerProcess {
             
         } catch (Exception e) {
             // Print a message indicating that no more tasks are available or an exception occurred
+            System.out.println(e.getMessage());
             System.out.println("No more tasks");
         }
     }
