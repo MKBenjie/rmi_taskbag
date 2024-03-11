@@ -13,4 +13,5 @@ public interface TaskBagInterface extends Remote{
     public List<Integer> readPair(String key) throws RemoteException;
     public void setCurrentWorkerDetails (String details) throws RemoteException;
     public String getCurrentWorkerDetails () throws RemoteException;
+    public void deductFromOtherResults( String key) throws RemoteException;
 }

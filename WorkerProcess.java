@@ -41,7 +41,8 @@ public class WorkerProcess {
 
                 // Store the calculated prime numbers as the result
                 // taskBag.setCurrentWorkerDetails(ip + " reply "+timesreplied);
-                taskBag.pairOut("result", result , (ip+" reply "+timesreplied) );
+                taskBag.pairOut("result", result , (ip+"_reply_"+ (++timesreplied)) );
+              
 
                 // Sleep for 2 seconds to simulate task processing time
                 Thread.sleep(2000);

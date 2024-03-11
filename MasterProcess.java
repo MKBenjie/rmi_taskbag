@@ -81,19 +81,36 @@ public class MasterProcess {
                 //     System.out.print(num + " ");                                           
                 // }
                 // System.out.println();
-                
+
                 System.out.println("Obtained Results From Worker(s):");                
                 for (int num : results) {
                     System.out.print(num + " ");                }
                 System.out.println();
 
-                Map<String, List<Integer>> otherResults = taskBag.otherResults;
+                Map<String, int[]> otherResults = new HashMap<String, int[]>(taskBag.otherResults);
 
                 System.out.println("individual contributions");
                 otherResults.forEach((key, value) -> {
-                    System.out.println(key); 
-                    System.out.println(value);
-                    taskBag.otherResults.remove(key);
+                    System.out.print(key+" : "); 
+                    
+                        // Convert int[] to Integer[]
+                    Integer[] integerArray = Arrays.stream(value).boxed().toArray(Integer[]::new);
+
+                    // Convert Integer[] to List<Integer>
+                    List<Integer> integerList = Arrays.asList(integerArray);
+                    System.err.println();
+                    System.err.println();
+
+
+
+                    
+                    System.out.println(integerList);
+                    try {
+                        taskBag.deductFromOtherResults(key);
+                    } catch (RemoteException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 }); 
             }
         } catch (Exception e) {
