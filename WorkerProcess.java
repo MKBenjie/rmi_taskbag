@@ -78,11 +78,11 @@ public class WorkerProcess {
 
     // Method to check if a number is prime
     public static boolean isPrime(int num) {
-        if (num <= 1) {
+        if (num <= 1) {                             /* what of case when one is the num */
             return false;
         }
-        for (int i = 2; i <= Math.sqrt(num); i++) {
-            if (num % i == 0) {
+        for (int i = 2; i <= Math.sqrt(num); i++) {         
+            if (num % i == 0) {                            
                 return false;
             }
         }

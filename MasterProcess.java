@@ -1,7 +1,22 @@
 import java.util.*;
 import java.rmi.Naming;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
+
 
 public class MasterProcess {
+
+    public interface TaskBagInterface extends Remote{
+
+        public void pairOut(int key, int[] value) throws RemoteException;
+        public void pairOut(String key, int[] value) throws RemoteException;
+        public void pairOut(String key, int id) throws RemoteException;
+        public int[] pairIn(int id) throws RemoteException;
+        public int pairIn(String key) throws RemoteException;
+        public List<Integer> readPair(String key) throws RemoteException;
+    }
+    
     public static void main(String[] args) {
         try {
             System.out.println("Master is booting ......");
@@ -21,7 +36,7 @@ public class MasterProcess {
             System.out.println("Master Process Loading ...... ");
 
             // Create task batches
-            List batchTasks = getRangeBatches(max);
+            List<int[]> batchTasks = getRangeBatches(max);
             List<Integer> results = new ArrayList<>();
 
             TaskBagImp taskBag = new TaskBagImp();
@@ -47,7 +62,7 @@ public class MasterProcess {
             }
 
             while (true) {
-                Thread.sleep(5000);
+                Thread.sleep(5000);                                         
                 // Get calculated results by workers
                 List<Integer> result = taskBag.readPair("result");
                 results.addAll(result);
@@ -60,9 +75,16 @@ public class MasterProcess {
 
                 System.out.println("Obtained Results From Worker(s):");
                 for (int num : results) {
-                    System.out.print(num + " ");
+                    System.out.print(num + " ");                                           
                 }
                 System.out.println();
+
+                Map<String, List<Integer>> otherResults = taskBag.otherResults;
+                otherResults.forEach((key, value) -> {
+                    System.out.println(key); 
+                    System.out.println(results);
+                    taskBag.otherResults.remove(key);
+                }); 
             }
         } catch (Exception e) {
             System.out.println("Encountered Exception from Master side" + e);
@@ -70,17 +92,18 @@ public class MasterProcess {
     }
 
     // Method for creating ranges and grouping them into batches
-    public static List getRangeBatches(int max) {
+    public static List<int[]> getRangeBatches(int max) {
         int min = 1; // minimum number to process
         int batchSize = 10; // size of each batch
 
         // Compute the number of batches required
-        int numBatches = (int) Math.ceil((double) (max - min + 1) / batchSize);
+        int numBatches = (int) Math.ceil((double) (max - min + 1) / batchSize);    /*SAME AS MAX*/
+                                                                                    /* WHATS THE USE OF THE CEIL */
 
         // Break the range into batches
         List<int[]> batches = new ArrayList<>();
         for (int i = 0; i < numBatches; i++) {
-            int start = min + i * batchSize;
+            int start = min + i * batchSize;                                            
             int end = Math.min(start + batchSize - 1, max);
             int[] batch = new int[end - start + 1];
             for (int j = start; j <= end; j++) {

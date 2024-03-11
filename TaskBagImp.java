@@ -11,12 +11,15 @@ public class TaskBagImp extends UnicastRemoteObject implements TaskBagInterface{
     private Map<String, Integer> taskDescriptions;
     private Map<String, List<Integer>> taskResults;
     private int maxTaskId;
+    Map<String, List<Integer>> otherResults;
 
     public TaskBagImp() throws RemoteException {
         taskData = new HashMap<>();
         taskDescriptions = new HashMap<>();
         taskResults = new HashMap<>();
         maxTaskId = 0;
+        otherResults = new HashMap<>();
+
     }
 
     // Master process method for adding a task to the taskData HashMap 
@@ -27,9 +30,11 @@ public class TaskBagImp extends UnicastRemoteObject implements TaskBagInterface{
     public synchronized void pairOut(String key, int[] value) throws RemoteException {
         List<Integer> results = taskResults.getOrDefault(key, new ArrayList<Integer>());
         for (int num : value) {
-            results.add(num);
+            results.add(num);                                     /* results.addAll(results); */
         }
         taskResults.put(key, results);
+        // -TODO- 
+        otherResults.put("key " + 1, results);
     }
 
     // Master Process Adds tasks description to taskDescriptions HashMap
@@ -53,7 +58,7 @@ public class TaskBagImp extends UnicastRemoteObject implements TaskBagInterface{
                 int taskId = taskDescriptions.remove(key);
                 if (taskId < maxTaskId) {
                     // change next task key to NextTask
-                    taskDescriptions.put("NextTask", taskId + 1);
+                    taskDescriptions.put("NextTask", taskId + 1);          
                     taskDescriptions.remove("Task" + (taskId + 1));
                 }
 
