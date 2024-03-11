@@ -1,9 +1,23 @@
 import java.util.*;
 import java.rmi.Naming;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 public class MasterProcess {
+    public interface TaskBagInterface extends Remote{
+
+    public void pairOut(int key, int[] value) throws RemoteException;
+    public void pairOut(String key, int[] value) throws RemoteException;
+    public void pairOut(String key, int id) throws RemoteException;
+    public int[] pairIn(int id) throws RemoteException;
+    public int pairIn(String key) throws RemoteException;
+    public List<Integer> readPair(String key) throws RemoteException;
+    public void setCurrentWorkerDetails (String details) throws RemoteException;
+    public String getCurrentWorkerDetails () throws RemoteException;
+}
     public static void main(String[] args) {
         try {
+            // System.setProperty("java.rmi.server.hostname", "127.0.0.1");
             System.out.println("Master is booting ......");
             // Extract the maximum value from command-line arguments
             String maxString = args[0];
@@ -47,7 +61,7 @@ public class MasterProcess {
             }
 
             while (true) {
-                Thread.sleep(5000);
+                Thread.sleep(15000);
                 // Get calculated results by workers
                 List<Integer> result = taskBag.readPair("result");
                 results.addAll(result);
@@ -58,7 +72,8 @@ public class MasterProcess {
                     break;
                 }
 
-                System.out.println("Obtained Results From Worker(s):");
+                System.out.println("Obtained Results From Worker(s):" + result.size());
+                System.out.println(taskBag.getCurrentWorkerDetails() + "\n");
                 for (int num : results) {
                     System.out.print(num + " ");
                 }
